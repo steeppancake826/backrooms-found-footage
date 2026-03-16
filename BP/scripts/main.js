@@ -2331,6 +2331,24 @@ function _teleport_to_level(player, level) {
  * Remove a player from the backrooms and return them to the overworld surface.
  * @param {import("@minecraft/server").Player} player
  */
+/**
+ * Find the highest solid block Y at a given X/Z in the overworld.
+ * @param {import("@minecraft/server").Dimension} dimension
+ * @param {number} x
+ * @param {number} z
+ * @returns {number} Safe spawn Y (on top of highest solid block)
+ */
+function _find_surface_y(dimension, x, z) {
+  for (let y = 120; y > 0; y--) {
+    const block = _try_get_block(dimension, { x, y, z });
+    const above = _try_get_block(dimension, { x, y: y + 1, z });
+    if (block && block.isSolid && above && above.isAir) {
+      return y + 1;
+    }
+  }
+  return 65; // fallback to sea level
+}
+
 function _escape_backrooms(player) {
   player.removeTag(BACKROOMS_TAG);
   for (const tag of ALL_LEVEL_TAGS) {
@@ -2339,13 +2357,16 @@ function _escape_backrooms(player) {
   _grassfield_spawn_points.delete(player.id);
 
   const prefix = "\u00A7e[BACKROOMS] \u00A7f";
+  const dimension = world.getDimension("overworld");
+  const px = Math.floor(player.location.x);
+  const pz = Math.floor(player.location.z);
 
   system.runTimeout(() => {
     try {
-      // Teleport to overworld surface
+      const surface_y = _find_surface_y(dimension, px, pz);
       player.teleport(
-        { x: player.location.x, y: 100, z: player.location.z },
-        { dimension: player.dimension }
+        { x: px + 0.5, y: surface_y, z: pz + 0.5 },
+        { dimension }
       );
       player.sendMessage(`${prefix}\u00A7aYou escaped the Backrooms.`);
       player.sendMessage(`${prefix}\u00A77...or did you?`);
@@ -3014,12 +3035,16 @@ function _escape_backrooms_victory(player) {
   _grassfield_spawn_points.delete(player.id);
 
   const prefix = "\u00A7e[BACKROOMS] \u00A7f";
+  const dimension = world.getDimension("overworld");
+  const px = Math.floor(player.location.x);
+  const pz = Math.floor(player.location.z);
 
   system.runTimeout(() => {
     try {
+      const surface_y = _find_surface_y(dimension, px, pz);
       player.teleport(
-        { x: player.location.x, y: 100, z: player.location.z },
-        { dimension: player.dimension }
+        { x: px + 0.5, y: surface_y, z: pz + 0.5 },
+        { dimension }
       );
       player.sendMessage(`${prefix}\u00A7k||||||||||||||||||||`);
     } catch { /* disconnected */ }
@@ -3146,6 +3171,46 @@ function _start_grassfield_atmosphere_loop() {
 }
 
 // ---------------------------------------------------------------------------
+// Backrooms respawn — if player dies while in backrooms, respawn them there
+// ---------------------------------------------------------------------------
+
+/**
+ * Listen for player spawns. If a player has the in_backrooms tag and just
+ * respawned (died), teleport them back into their current level.
+ * Players who escaped (no tag) respawn normally in the overworld.
+ */
+function _setup_respawn_listener() {
+  world.afterEvents.playerSpawn.subscribe((event) => {
+    const player = event.player;
+    const is_initial_spawn = event.initialSpawn;
+
+    // Only handle respawns (deaths), not initial world join
+    if (is_initial_spawn) return;
+
+    // Only respawn in backrooms if they still have the tag
+    if (!player.hasTag(BACKROOMS_TAG)) return;
+
+    const level = _get_player_level(player);
+    if (level < 0) return;
+
+    const prefix = "\u00A7e[BACKROOMS] \u00A7f";
+
+    // Short delay to let respawn settle
+    system.runTimeout(() => {
+      try {
+        player.sendMessage(`${prefix}\u00A7cDeath does not free you from the Backrooms.`);
+        player.sendMessage(`${prefix}\u00A77You wake up in ${LEVEL_NAMES[level] || "the Backrooms"}...`);
+
+        // Teleport back to their current level
+        _teleport_to_level(player, level);
+      } catch {
+        // player disconnected
+      }
+    }, 20);
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Initialization
 // ---------------------------------------------------------------------------
 
@@ -3154,6 +3219,7 @@ world.afterEvents.worldInitialize.subscribe(() => {
 
   try { _load_traps(); } catch (e) { console.warn("[BACKROOMS] Failed to load traps: " + e); }
   try { _setup_suffocation_listener(); } catch (e) { console.warn("[BACKROOMS] Failed to setup suffocation: " + e); }
+  try { _setup_respawn_listener(); } catch (e) { console.warn("[BACKROOMS] Failed to setup respawn: " + e); }
   try { _setup_almond_water_listener(); } catch (e) { console.warn("[BACKROOMS] Failed to setup almond water: " + e); }
   try { _setup_chat_commands(); } catch (e) { console.warn("[BACKROOMS] Failed to setup chat commands: " + e); }
   try { _start_trap_placement_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start trap loop: " + e); }
