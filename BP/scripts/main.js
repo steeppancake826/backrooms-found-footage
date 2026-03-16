@@ -2226,6 +2226,53 @@ function _send_to_backrooms(player, cause) {
       }
     }
   }, 100);
+
+  // Force re-generate 3x3 grid after chunks have had time to load
+  system.runTimeout(() => {
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[0];
+        if (chunks) chunks.delete(key);
+        _generate_level_0_chunk(dimension, cx + dx, cz + dz);
+      }
+    }
+  }, 60);
+
+  // Second forced pass on 5x5 grid to catch stragglers
+  system.runTimeout(() => {
+    for (let dx = -2; dx <= 2; dx++) {
+      for (let dz = -2; dz <= 2; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[0];
+        if (chunks) chunks.delete(key);
+        _generate_level_0_chunk(dimension, cx + dx, cz + dz);
+      }
+    }
+  }, 120);
+
+  // Explorer's note — lore guidebook delivered as chat messages
+  system.runTimeout(() => {
+    try {
+      const p = "\u00A7e[FOUND NOTE] \u00A7f";
+      player.sendMessage(`${p}\u00A76--- EXPLORER'S NOTE ---`);
+      player.sendMessage(`${p}\u00A77To whoever finds this...`);
+      player.sendMessage(`${p}\u00A77I've mapped what I can. The levels go:`);
+      player.sendMessage(`${p}\u00A7e Level 0\u00A77 - The Lobby. Yellow walls. Start here.`);
+      player.sendMessage(`${p}\u00A7e Level 1\u00A77 - Habitable Zone. Industrial. Darker.`);
+      player.sendMessage(`${p}\u00A7e Level 2\u00A77 - Pipe Dreams. Narrow tunnels. Hard to breathe.`);
+      player.sendMessage(`${p}\u00A7e The Poolrooms\u00A77 - Blue tiles. Water everywhere.`);
+      player.sendMessage(`${p}\u00A7e Grass Field\u00A77 - Open sky. Keep walking.`);
+      player.sendMessage(`${p}\u00A7e Thalassophobia\u00A77 - Deep water. Dark.`);
+      player.sendMessage(`${p}\u00A7e Level Run\u00A77 - Bright. Colorful. DO NOT TRUST IT.`);
+      player.sendMessage(`${p}\u00A7e The Void\u00A77 - The end. Find the threshold.`);
+      player.sendMessage(`${p}`);
+      player.sendMessage(`${p}\u00A77Look for glowing exits. They take you deeper.`);
+      player.sendMessage(`${p}\u00A77Wooden crates have food. You'll need it.`);
+      player.sendMessage(`${p}\u00A77I didn't make it out. Maybe you will.`);
+      player.sendMessage(`${p}\u00A76--- END OF NOTE ---`);
+    } catch { /* disconnected */ }
+  }, 160);
 }
 
 /**
@@ -2325,6 +2372,30 @@ function _teleport_to_level(player, level) {
       }
     }
   }, 100);
+
+  // Force re-generate 3x3 grid after chunks have had time to load
+  system.runTimeout(() => {
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[level];
+        if (chunks) chunks.delete(key);
+        _generate_level_chunk(dimension, level, cx + dx, cz + dz);
+      }
+    }
+  }, 60);
+
+  // Second forced pass on 5x5 grid to catch stragglers
+  system.runTimeout(() => {
+    for (let dx = -2; dx <= 2; dx++) {
+      for (let dz = -2; dz <= 2; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[level];
+        if (chunks) chunks.delete(key);
+        _generate_level_chunk(dimension, level, cx + dx, cz + dz);
+      }
+    }
+  }, 120);
 }
 
 /**
@@ -2619,6 +2690,12 @@ function _start_chunk_generation_loop() {
 
       for (let dx = -2; dx <= 2; dx++) {
         for (let dz = -2; dz <= 2; dz++) {
+          // Force re-generate the player's current chunk to ensure rooms are carved
+          if (dx === 0 && dz === 0) {
+            const key = _chunk_key(cx, cz);
+            const chunks = _generated_chunks[level];
+            if (chunks) chunks.delete(key);
+          }
           _generate_level_chunk(dimension, level, cx + dx, cz + dz);
         }
       }
