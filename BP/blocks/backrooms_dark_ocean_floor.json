@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.0",
+  "format_version": "1.21.40",
   "minecraft:block": {
     "description": {
       "identifier": "backrooms:dark_ocean_floor",
@@ -15,6 +15,7 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": 5.0
       },
+      "minecraft:geometry": "minecraft:geometry.full_block",
       "minecraft:map_color": "#0a1428",
       "minecraft:material_instances": {
         "*": {

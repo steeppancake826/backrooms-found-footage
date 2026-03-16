@@ -2178,14 +2178,24 @@ function _send_to_backrooms(player, cause) {
 
   const { cx, cz } = _world_to_chunk(px, pz);
 
-  for (let dx = -1; dx <= 1; dx++) {
-    for (let dz = -1; dz <= 1; dz++) {
+  const origin_x = cx * CHUNK_SIZE;
+  const origin_z = cz * CHUNK_SIZE;
+
+  // Force-load the target area before generating chunks
+  const ta_x1 = origin_x - CHUNK_SIZE;
+  const ta_z1 = origin_z - CHUNK_SIZE;
+  const ta_x2 = origin_x + CHUNK_SIZE * 2;
+  const ta_z2 = origin_z + CHUNK_SIZE * 2;
+  try {
+    dimension.runCommand(`tickingarea add ${ta_x1} ${LEVEL_FLOOR_Y[0] - 5} ${ta_z1} ${ta_x2} ${LEVEL_FLOOR_Y[0] + 10} ${ta_z2} "backrooms_load" true`);
+  } catch { /* already exists or failed */ }
+
+  for (let dx = -2; dx <= 2; dx++) {
+    for (let dz = -2; dz <= 2; dz++) {
       _generate_level_0_chunk(dimension, cx + dx, cz + dz);
     }
   }
 
-  const origin_x = cx * CHUNK_SIZE;
-  const origin_z = cz * CHUNK_SIZE;
   const spawn_x = origin_x + Math.floor(CHUNK_SIZE / 2) + 2;
   const spawn_z = origin_z + Math.floor(CHUNK_SIZE / 2) + 2;
   const spawn_y = LEVEL_FLOOR_Y[0] + 1;
@@ -2200,7 +2210,20 @@ function _send_to_backrooms(player, cause) {
     } catch {
       // player disconnected
     }
-  }, 10);
+  }, 60);
+
+  // Deferred re-generation to fill in any chunks missed on first pass
+  system.runTimeout(() => {
+    for (let dx = -2; dx <= 2; dx++) {
+      for (let dz = -2; dz <= 2; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[0];
+        if (!chunks.has(key)) {
+          _generate_level_0_chunk(dimension, cx + dx, cz + dz);
+        }
+      }
+    }
+  }, 100);
 }
 
 /**
@@ -2239,15 +2262,25 @@ function _teleport_to_level(player, level) {
   const { cx, cz } = _world_to_chunk(px, pz);
   const floor_y = LEVEL_FLOOR_Y[level];
 
+  const origin_x = cx * CHUNK_SIZE;
+  const origin_z = cz * CHUNK_SIZE;
+
+  // Force-load the target area before generating chunks
+  const ta_x1 = origin_x - CHUNK_SIZE;
+  const ta_z1 = origin_z - CHUNK_SIZE;
+  const ta_x2 = origin_x + CHUNK_SIZE * 2;
+  const ta_z2 = origin_z + CHUNK_SIZE * 2;
+  try {
+    dimension.runCommand(`tickingarea add ${ta_x1} ${floor_y - 5} ${ta_z1} ${ta_x2} ${floor_y + 10} ${ta_z2} "backrooms_load" true`);
+  } catch { /* already exists or failed */ }
+
   // Ensure chunks are generated
-  for (let dx = -1; dx <= 1; dx++) {
-    for (let dz = -1; dz <= 1; dz++) {
+  for (let dx = -2; dx <= 2; dx++) {
+    for (let dz = -2; dz <= 2; dz++) {
       _generate_level_chunk(dimension, level, cx + dx, cz + dz);
     }
   }
 
-  const origin_x = cx * CHUNK_SIZE;
-  const origin_z = cz * CHUNK_SIZE;
   const spawn_x = origin_x + Math.floor(CHUNK_SIZE / 2) + 2;
   const spawn_z = origin_z + Math.floor(CHUNK_SIZE / 2) + 2;
   const spawn_y = floor_y + 1;
@@ -2276,7 +2309,20 @@ function _teleport_to_level(player, level) {
     } catch {
       // player disconnected
     }
-  }, 10);
+  }, 60);
+
+  // Deferred re-generation to fill in any chunks missed on first pass
+  system.runTimeout(() => {
+    for (let dx = -2; dx <= 2; dx++) {
+      for (let dz = -2; dz <= 2; dz++) {
+        const key = _chunk_key(cx + dx, cz + dz);
+        const chunks = _generated_chunks[level] || _generated_chunks[0];
+        if (!chunks.has(key)) {
+          _generate_level_chunk(dimension, level, cx + dx, cz + dz);
+        }
+      }
+    }
+  }, 100);
 }
 
 /**
@@ -2548,8 +2594,8 @@ function _start_chunk_generation_loop() {
         Math.floor(player.location.z)
       );
 
-      for (let dx = -1; dx <= 1; dx++) {
-        for (let dz = -1; dz <= 1; dz++) {
+      for (let dx = -2; dx <= 2; dx++) {
+        for (let dz = -2; dz <= 2; dz++) {
           _generate_level_chunk(dimension, level, cx + dx, cz + dz);
         }
       }

@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.0",
+  "format_version": "1.21.40",
   "minecraft:block": {
     "description": {
       "identifier": "backrooms:ceiling_tile",
@@ -15,6 +15,7 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": 1.5
       },
+      "minecraft:geometry": "minecraft:geometry.full_block",
       "minecraft:map_color": "#D4D4D4",
       "minecraft:material_instances": {
         "*": {

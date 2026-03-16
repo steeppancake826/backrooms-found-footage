@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.0",
+  "format_version": "1.21.40",
   "minecraft:block": {
     "description": {
       "identifier": "backrooms:party_floor",
@@ -15,6 +15,7 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": 2.0
       },
+      "minecraft:geometry": "minecraft:geometry.full_block",
       "minecraft:map_color": "#ff69b4",
       "minecraft:material_instances": {
         "*": {

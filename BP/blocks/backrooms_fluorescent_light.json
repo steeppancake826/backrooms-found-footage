@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.0",
+  "format_version": "1.21.40",
   "minecraft:block": {
     "description": {
       "identifier": "backrooms:fluorescent_light",
@@ -15,6 +15,7 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": 1.0
       },
+      "minecraft:geometry": "minecraft:geometry.full_block",
       "minecraft:light_emission": 15,
       "minecraft:map_color": "#FFFFCC",
       "minecraft:material_instances": {
