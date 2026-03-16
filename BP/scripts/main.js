@@ -445,8 +445,10 @@ function _hash_seeded(x, z, seed) {
  * @returns {boolean}
  */
 function _is_active_room(room_col, room_row, seed) {
+  // Rooms near spawn (0,0) are always active so the player has a starting area
+  if (Math.abs(room_col) < 8 && Math.abs(room_row) < 8) return true;
   const hash = _hash_seeded(room_col * 127 + 53, room_row * 131 + 67, seed);
-  return hash < 0.05;
+  return hash < 0.40;
 }
 
 /**
@@ -2303,19 +2305,15 @@ function _send_to_backrooms(player, cause) {
   _set_player_level(player, 0);
 
   const dimension = player.dimension;
-  const px = Math.floor(player.location.x);
-  const pz = Math.floor(player.location.z);
 
-  const { cx, cz } = _world_to_chunk(px, pz);
-
-  const origin_x = cx * CHUNK_SIZE;
-  const origin_z = cz * CHUNK_SIZE;
+  // Always generate around world center (0,0) where spawn is guaranteed
+  const { cx, cz } = _world_to_chunk(0, 0);
 
   // Force-load the target area before generating chunks
-  const ta_x1 = origin_x - CHUNK_SIZE;
-  const ta_z1 = origin_z - CHUNK_SIZE;
-  const ta_x2 = origin_x + CHUNK_SIZE * 2;
-  const ta_z2 = origin_z + CHUNK_SIZE * 2;
+  const ta_x1 = -CHUNK_SIZE * 2;
+  const ta_z1 = -CHUNK_SIZE * 2;
+  const ta_x2 = CHUNK_SIZE * 3;
+  const ta_z2 = CHUNK_SIZE * 3;
   try {
     dimension.runCommand(`tickingarea add ${ta_x1} ${LEVEL_FLOOR_Y[0] - 5} ${ta_z1} ${ta_x2} ${LEVEL_FLOOR_Y[0] + 10} ${ta_z2} "backrooms_load" true`);
   } catch { /* already exists or failed */ }
@@ -2330,8 +2328,9 @@ function _send_to_backrooms(player, cause) {
     }
   }
 
-  const spawn_x = origin_x + Math.floor(CHUNK_SIZE / 2) + 2;
-  const spawn_z = origin_z + Math.floor(CHUNK_SIZE / 2) + 2;
+  // Always spawn at world center (0,0) where rooms are guaranteed
+  const spawn_x = 3;
+  const spawn_z = 3;
   const spawn_y = LEVEL_FLOOR_Y[0] + 1;
 
   system.runTimeout(() => {
@@ -2466,8 +2465,9 @@ function _teleport_to_level(player, level) {
     }
   }
 
-  const spawn_x = origin_x + Math.floor(CHUNK_SIZE / 2) + 2;
-  const spawn_z = origin_z + Math.floor(CHUNK_SIZE / 2) + 2;
+  // Always spawn near world center where rooms are guaranteed
+  const spawn_x = 3;
+  const spawn_z = 3;
   const spawn_y = floor_y + 1;
 
   if (!player.hasTag(BACKROOMS_TAG)) {
