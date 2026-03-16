@@ -167,7 +167,6 @@ const EXIT_CHANCE_L0 = 0.03;
 const EXIT_CHANCE_L1 = 0.025;
 const EXIT_CHANCE_L2 = 0.025;
 const EXIT_CHANCE_POOL = 0.02;
-const GRASSFIELD_ESCAPE_DISTANCE = 500;
 
 /** Exit structure chance per chunk — new levels. */
 const EXIT_CHANCE_THALASSO = 0.02;
@@ -179,6 +178,11 @@ const EXIT_CHECK_INTERVAL = 10;
 
 /** How often (ticks) to check almond water consumption for effect clearing. */
 const ALMOND_WATER_CHECK_INTERVAL = 20;
+
+/** Each level spans a 1000x1000 block area centered on 0,0. */
+const LEVEL_HALF_EXTENT = 500;
+const LEVEL_MIN_COORD = -LEVEL_HALF_EXTENT;
+const LEVEL_MAX_COORD = LEVEL_HALF_EXTENT;
 
 /** Block identifiers for Level 0. */
 const BLOCK_WALLPAPER = "backrooms:wallpaper";
@@ -394,12 +398,6 @@ const _generated_chunks = {
 /** @type {Array<import("@minecraft/server").Vector3>} */
 let _active_traps = [];
 
-/**
- * Track each player's spawn location for grass field escape distance calc.
- * @type {Map<string, import("@minecraft/server").Vector3>}
- */
-const _grassfield_spawn_points = new Map();
-
 // ---------------------------------------------------------------------------
 // Utility helpers
 // ---------------------------------------------------------------------------
@@ -436,6 +434,19 @@ function _hash_position(x, z) {
  */
 function _hash_seeded(x, z, seed) {
   return _hash_position(x + seed * 7919, z + seed * 6271);
+}
+
+/**
+ * Determine if a room cell should actually generate as a room (not solid wall).
+ * Only ~5% of cells become rooms to spread 500-1000 rooms across 1M blocks.
+ * @param {number} room_col
+ * @param {number} room_row
+ * @param {number} seed
+ * @returns {boolean}
+ */
+function _is_active_room(room_col, room_row, seed) {
+  const hash = _hash_seeded(room_col * 127 + 53, room_row * 131 + 67, seed);
+  return hash < 0.05;
 }
 
 /**
@@ -846,6 +857,9 @@ function _generate_level_0_chunk(dimension, cx, cz) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
 
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
+
       const room_x = origin_x + c * CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * CELL_DEPTH + WALL_THICKNESS;
 
@@ -894,8 +908,8 @@ function _generate_level_0_chunk(dimension, cx, cz) {
   _carve_level_boundary_west(dimension, cx, cz, floor_y, ceiling_y, ROOMS_PER_CHUNK, CELL_WIDTH, CELL_DEPTH, ROOM_WIDTH, ROOM_DEPTH, seed);
   _carve_level_boundary_north(dimension, cx, cz, floor_y, ceiling_y, ROOMS_PER_CHUNK, CELL_WIDTH, CELL_DEPTH, ROOM_WIDTH, ROOM_DEPTH, seed);
 
-  // Exit structure — rare staircase down
-  _maybe_place_exit_l0(dimension, cx, cz, origin_x, origin_z, floor_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 0, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -947,6 +961,9 @@ function _generate_level_1_chunk(dimension, cx, cz) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
 
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
+
       const room_x = origin_x + c * CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * CELL_DEPTH + WALL_THICKNESS;
 
@@ -992,8 +1009,8 @@ function _generate_level_1_chunk(dimension, cx, cz) {
   _carve_level_boundary_west(dimension, cx, cz, floor_y, ceiling_y, ROOMS_PER_CHUNK, CELL_WIDTH, CELL_DEPTH, ROOM_WIDTH, ROOM_DEPTH, seed);
   _carve_level_boundary_north(dimension, cx, cz, floor_y, ceiling_y, ROOMS_PER_CHUNK, CELL_WIDTH, CELL_DEPTH, ROOM_WIDTH, ROOM_DEPTH, seed);
 
-  // Exit — elevator door
-  _maybe_place_exit_l1(dimension, cx, cz, origin_x, origin_z, floor_y, ceiling_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 1, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1044,6 +1061,9 @@ function _generate_level_2_chunk(dimension, cx, cz) {
     for (let c = 0; c < L2_ROOMS_PER_CHUNK; c++) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
+
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
 
       const room_x = origin_x + c * L2_CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * L2_CELL_DEPTH + WALL_THICKNESS;
@@ -1100,8 +1120,8 @@ function _generate_level_2_chunk(dimension, cx, cz) {
   _carve_level_boundary_west(dimension, cx, cz, floor_y, ceiling_y, L2_ROOMS_PER_CHUNK, L2_CELL_WIDTH, L2_CELL_DEPTH, L2_ROOM_WIDTH, L2_ROOM_DEPTH, seed);
   _carve_level_boundary_north(dimension, cx, cz, floor_y, ceiling_y, L2_ROOMS_PER_CHUNK, L2_CELL_WIDTH, L2_CELL_DEPTH, L2_ROOM_WIDTH, L2_ROOM_DEPTH, seed);
 
-  // Exit — hatch in the floor
-  _maybe_place_exit_l2(dimension, cx, cz, origin_x, origin_z, floor_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 2, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1152,6 +1172,9 @@ function _generate_poolrooms_chunk(dimension, cx, cz) {
     for (let c = 0; c < POOL_ROOMS_PER_CHUNK; c++) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
+
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
 
       const room_x = origin_x + c * POOL_CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * POOL_CELL_DEPTH + WALL_THICKNESS;
@@ -1219,8 +1242,8 @@ function _generate_poolrooms_chunk(dimension, cx, cz) {
   _carve_pool_boundary_west(dimension, cx, cz, floor_y, ceiling_y, seed);
   _carve_pool_boundary_north(dimension, cx, cz, floor_y, ceiling_y, seed);
 
-  // Exit — drain hole
-  _maybe_place_exit_pool(dimension, cx, cz, origin_x, origin_z, floor_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 3, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1273,6 +1296,9 @@ function _generate_grassfield_chunk(dimension, cx, cz) {
       }
     }
   }
+
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 4, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1323,6 +1349,9 @@ function _generate_thalassophobia_chunk(dimension, cx, cz) {
     for (let c = 0; c < THAL_ROOMS_PER_CHUNK; c++) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
+
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
 
       const room_x = origin_x + c * THAL_CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * THAL_CELL_DEPTH + WALL_THICKNESS;
@@ -1417,8 +1446,8 @@ function _generate_thalassophobia_chunk(dimension, cx, cz) {
   _carve_thal_boundary_west(dimension, cx, cz, floor_y, ceiling_y, seed);
   _carve_thal_boundary_north(dimension, cx, cz, floor_y, ceiling_y, seed);
 
-  // Exit — glowing portal structure (2% per chunk)
-  _maybe_place_exit_thalasso(dimension, cx, cz, origin_x, origin_z, floor_y, ceiling_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 5, cx, cz);
 }
 
 /**
@@ -1536,6 +1565,9 @@ function _generate_level_run_chunk(dimension, cx, cz) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
 
+      // Skip this cell if it's not an active room
+      if (!_is_active_room(abs_col, abs_row, seed)) continue;
+
       const room_x = origin_x + c * LRUN_CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * LRUN_CELL_DEPTH + WALL_THICKNESS;
 
@@ -1582,8 +1614,8 @@ function _generate_level_run_chunk(dimension, cx, cz) {
   _carve_level_boundary_west(dimension, cx, cz, floor_y, ceiling_y, LRUN_ROOMS_PER_CHUNK, LRUN_CELL_WIDTH, LRUN_CELL_DEPTH, LRUN_ROOM_WIDTH, LRUN_ROOM_DEPTH, seed);
   _carve_level_boundary_north(dimension, cx, cz, floor_y, ceiling_y, LRUN_ROOMS_PER_CHUNK, LRUN_CELL_WIDTH, LRUN_CELL_DEPTH, LRUN_ROOM_WIDTH, LRUN_ROOM_DEPTH, seed);
 
-  // Exit — locked door (obsidian + iron door structure)
-  _maybe_place_exit_level_run(dimension, cx, cz, origin_x, origin_z, floor_y, ceiling_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 6, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1634,6 +1666,9 @@ function _generate_void_chunk(dimension, cx, cz) {
     for (let c = 0; c < rooms_per_chunk; c++) {
       const abs_col = room_col_offset + c;
       const abs_row = room_row_offset + r;
+
+      // Skip this cell if it's not an active room (slightly higher density for void)
+      if (!_is_active_room(abs_col, abs_row, seed) && _hash_seeded(abs_col * 89, abs_row * 97, seed + 777) > 0.08) continue;
 
       const room_x = origin_x + c * CELL_WIDTH + WALL_THICKNESS;
       const room_z = origin_z + r * CELL_DEPTH + WALL_THICKNESS;
@@ -1709,8 +1744,8 @@ function _generate_void_chunk(dimension, cx, cz) {
     }
   }
 
-  // Exit — nether portal frame with glowstone (the threshold)
-  _maybe_place_exit_void(dimension, cx, cz, origin_x, origin_z, floor_y);
+  // Single exit for this level
+  _maybe_place_single_exit(dimension, 7, cx, cz);
 }
 
 // ---------------------------------------------------------------------------
@@ -1903,7 +1938,100 @@ function _carve_pool_boundary_north(dimension, cx, cz, floor_y, ceiling_y, seed)
 }
 
 // ---------------------------------------------------------------------------
-// Exit structures
+// Single exit system — one exit per level
+// ---------------------------------------------------------------------------
+
+/**
+ * Get the single exit position for a level. Deterministic based on level seed.
+ * Exit is placed far from spawn (0,0) to force exploration.
+ * @param {number} level
+ * @returns {{ x: number, z: number }}
+ */
+function _get_exit_position(level) {
+  // Place exits at varying distances, 200-450 blocks from center
+  const seeds = [4201, 4202, 4203, 4204, 4205, 4206, 4207, 4208];
+  const seed = seeds[level] || 4200;
+  const angle_hash = _hash_seeded(seed, seed * 3, level * 1000);
+  const dist_hash = _hash_seeded(seed * 7, seed * 11, level * 2000);
+
+  const angle = angle_hash * Math.PI * 2;
+  const distance = 200 + dist_hash * 250; // 200-450 blocks from center
+
+  return {
+    x: Math.floor(Math.cos(angle) * distance),
+    z: Math.floor(Math.sin(angle) * distance),
+  };
+}
+
+/**
+ * Check if the current chunk contains the exit for this level, and place it.
+ * @param {import("@minecraft/server").Dimension} dimension
+ * @param {number} level
+ * @param {number} cx
+ * @param {number} cz
+ */
+function _maybe_place_single_exit(dimension, level, cx, cz) {
+  const exit_pos = _get_exit_position(level);
+  const chunk_min_x = cx * CHUNK_SIZE;
+  const chunk_min_z = cz * CHUNK_SIZE;
+  const chunk_max_x = chunk_min_x + CHUNK_SIZE;
+  const chunk_max_z = chunk_min_z + CHUNK_SIZE;
+
+  // Check if exit falls within this chunk
+  if (exit_pos.x < chunk_min_x || exit_pos.x >= chunk_max_x) return;
+  if (exit_pos.z < chunk_min_z || exit_pos.z >= chunk_max_z) return;
+
+  const floor_y = LEVEL_FLOOR_Y[level];
+  const room_height = LEVEL_ROOM_HEIGHT[level] || 4;
+  const ceiling_y = floor_y + room_height;
+
+  const ex = exit_pos.x;
+  const ez = exit_pos.z;
+
+  // Clear a 5x5 room around the exit for visibility
+  for (let dx = -2; dx <= 2; dx++) {
+    for (let dz = -2; dz <= 2; dz++) {
+      for (let y = floor_y + 1; y < ceiling_y; y++) {
+        _try_set_block(dimension, { x: ex + dx, y, z: ez + dz }, "minecraft:air");
+      }
+    }
+  }
+
+  if (level === 7) {
+    // Void exit — nether portal frame with glowstone (return to overworld)
+    // 3x3 glowstone platform
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        _try_set_block(dimension, { x: ex + dx, y: floor_y, z: ez + dz }, "minecraft:glowstone");
+      }
+    }
+    // Obsidian pillars at corners
+    for (let y = floor_y + 1; y < ceiling_y; y++) {
+      _try_set_block(dimension, { x: ex - 1, y, z: ez - 1 }, "minecraft:obsidian");
+      _try_set_block(dimension, { x: ex + 1, y, z: ez - 1 }, "minecraft:obsidian");
+      _try_set_block(dimension, { x: ex - 1, y, z: ez + 1 }, "minecraft:obsidian");
+      _try_set_block(dimension, { x: ex + 1, y, z: ez + 1 }, "minecraft:obsidian");
+    }
+    // Beacon on top
+    _try_set_block(dimension, { x: ex, y: floor_y + 1, z: ez }, "minecraft:beacon");
+  } else {
+    // Standard exit — glowstone platform with marker
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dz = -1; dz <= 1; dz++) {
+        _try_set_block(dimension, { x: ex + dx, y: floor_y, z: ez + dz }, "minecraft:glowstone");
+      }
+    }
+    // Iron block pillar as visual beacon
+    for (let y = floor_y + 1; y <= ceiling_y; y++) {
+      _try_set_block(dimension, { x: ex, y, z: ez }, "minecraft:iron_block");
+    }
+    // Torch on top
+    _try_set_block(dimension, { x: ex, y: ceiling_y, z: ez }, "minecraft:glowstone");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Old exit structures (deprecated — kept for reference)
 // ---------------------------------------------------------------------------
 
 /**
@@ -2194,6 +2322,10 @@ function _send_to_backrooms(player, cause) {
 
   for (let dx = -2; dx <= 2; dx++) {
     for (let dz = -2; dz <= 2; dz++) {
+      const chunk_world_x = (cx + dx) * CHUNK_SIZE;
+      const chunk_world_z = (cz + dz) * CHUNK_SIZE;
+      if (chunk_world_x < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_x > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
+      if (chunk_world_z < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_z > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
       _generate_level_0_chunk(dimension, cx + dx, cz + dz);
     }
   }
@@ -2326,6 +2458,10 @@ function _teleport_to_level(player, level) {
   // Ensure chunks are generated
   for (let dx = -2; dx <= 2; dx++) {
     for (let dz = -2; dz <= 2; dz++) {
+      const chunk_world_x = (cx + dx) * CHUNK_SIZE;
+      const chunk_world_z = (cz + dz) * CHUNK_SIZE;
+      if (chunk_world_x < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_x > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
+      if (chunk_world_z < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_z > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
       _generate_level_chunk(dimension, level, cx + dx, cz + dz);
     }
   }
@@ -2341,11 +2477,6 @@ function _teleport_to_level(player, level) {
   }
 
   _set_player_level(player, level);
-
-  // Track grass field spawn point for escape distance
-  if (level === 4) {
-    _grassfield_spawn_points.set(player.id, { x: spawn_x, y: spawn_y, z: spawn_z });
-  }
 
   system.runTimeout(() => {
     try {
@@ -2425,7 +2556,6 @@ function _escape_backrooms(player) {
   for (const tag of ALL_LEVEL_TAGS) {
     player.removeTag(tag);
   }
-  _grassfield_spawn_points.delete(player.id);
 
   const prefix = "\u00A7e[BACKROOMS] \u00A7f";
   const dimension = world.getDimension("overworld");
@@ -2501,82 +2631,31 @@ function _start_exit_detection_loop() {
       if (!player.hasTag(BACKROOMS_TAG)) continue;
 
       const level = _get_player_level(player);
-      const py = Math.floor(player.location.y);
+      if (level < 0) continue;
+
+      const floor_y = LEVEL_FLOOR_Y[level];
+      if (floor_y === undefined) continue;
+
       const px = Math.floor(player.location.x);
       const pz = Math.floor(player.location.z);
       const dimension = player.dimension;
 
       try {
-        if (level === 0) {
-          // Standing on glowstone at Level 0 floor → Level 1
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[0], z: pz });
-          if (block_below && block_below.typeId === "minecraft:glowstone") {
-            _teleport_to_level(player, 1);
-            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fYou descend the staircase...");
-          }
-        } else if (level === 1) {
-          // Standing on glowstone at Level 1 floor → Level 2
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[1], z: pz });
-          if (block_below && block_below.typeId === "minecraft:glowstone") {
-            _teleport_to_level(player, 2);
-            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe elevator groans downward...");
-          }
-        } else if (level === 2) {
-          // Standing on glowstone ring at Level 2 (hatch) → Poolrooms
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[2], z: pz });
-          const block_under = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[2] - 1, z: pz });
-          if (block_below && block_below.typeId === "minecraft:glowstone") {
-            _teleport_to_level(player, 3);
-            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fYou drop through the hatch...");
-          }
-        } else if (level === 3) {
-          // Standing on soul sand drain → Grass Field
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[3] - 1, z: pz });
-          if (block_below && block_below.typeId === "minecraft:soul_sand") {
-            _teleport_to_level(player, 4);
-            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fYou're pulled through the drain...");
-          }
-        } else if (level === 4) {
-          // Grass field — walk far enough from spawn → Thalassophobia
-          const spawn_point = _grassfield_spawn_points.get(player.id);
-          if (spawn_point) {
-            const dist_x = player.location.x - spawn_point.x;
-            const dist_z = player.location.z - spawn_point.z;
-            const distance = Math.sqrt(dist_x * dist_x + dist_z * dist_z);
-            if (distance >= GRASSFIELD_ESCAPE_DISTANCE) {
-              _teleport_to_level(player, 5);
-              player.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe ground gives way... you plunge into dark water.");
-            }
-          }
-        } else if (level === 5) {
-          // Thalassophobia — standing on sea lantern portal → Level Run
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[5], z: pz });
-          if (block_below && block_below.typeId === "minecraft:sea_lantern") {
-            _teleport_to_level(player, 6);
-            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe portal glows... you're pulled through.");
-          }
-        } else if (level === 6) {
-          // Level Run — standing on glowstone in obsidian frame → The Void
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[6], z: pz });
-          if (block_below && block_below.typeId === "minecraft:glowstone") {
-            // Verify obsidian nearby to distinguish from normal glowstone lights
-            const left = _try_get_block(dimension, { x: px - 2, y: LEVEL_FLOOR_Y[6] + 1, z: pz });
-            const right = _try_get_block(dimension, { x: px + 2, y: LEVEL_FLOOR_Y[6] + 1, z: pz });
-            if ((left && left.typeId === "minecraft:obsidian") || (right && right.typeId === "minecraft:obsidian")) {
-              _teleport_to_level(player, 7);
-              player.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe door slams shut behind you. Reality fractures.");
-            }
-          }
-        } else if (level === 7) {
-          // The Void — standing on glowstone threshold → ESCAPE (victory)
-          const block_below = _try_get_block(dimension, { x: px, y: LEVEL_FLOOR_Y[7], z: pz });
-          if (block_below && block_below.typeId === "minecraft:glowstone") {
-            // Verify obsidian frame to distinguish from glowstone lights
-            const left = _try_get_block(dimension, { x: px - 1, y: LEVEL_FLOOR_Y[7] + 1, z: pz });
-            const right = _try_get_block(dimension, { x: px + 1, y: LEVEL_FLOOR_Y[7] + 1, z: pz });
-            if ((left && left.typeId === "minecraft:obsidian") || (right && right.typeId === "minecraft:obsidian")) {
-              _escape_backrooms_victory(player);
-            }
+        const block_below = _try_get_block(dimension, { x: px, y: floor_y, z: pz });
+        if (block_below && block_below.typeId === "minecraft:glowstone") {
+          if (level === 7) {
+            // Final level — escape to overworld
+            _escape_backrooms_victory(player);
+            player.sendMessage("\u00A7e[BACKROOMS] \u00A7aThe threshold opens... you're going home.");
+          } else if (level === 4) {
+            // Grass field → Thalassophobia
+            _teleport_to_level(player, 5);
+            player.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe ground gives way to water...");
+          } else {
+            // Standard: go to next level
+            _teleport_to_level(player, level + 1);
+            const next_name = LEVEL_NAMES[level + 1] || "the next level";
+            player.sendMessage(`\u00A7e[BACKROOMS] \u00A7fYou descend to ${next_name}...`);
           }
         }
       } catch {
@@ -2690,6 +2769,12 @@ function _start_chunk_generation_loop() {
 
       for (let dx = -2; dx <= 2; dx++) {
         for (let dz = -2; dz <= 2; dz++) {
+          // Level boundary enforcement
+          const chunk_world_x = (cx + dx) * CHUNK_SIZE;
+          const chunk_world_z = (cz + dz) * CHUNK_SIZE;
+          if (chunk_world_x < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_x > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
+          if (chunk_world_z < LEVEL_MIN_COORD - CHUNK_SIZE || chunk_world_z > LEVEL_MAX_COORD + CHUNK_SIZE) continue;
+
           // Force re-generate the player's current chunk to ensure rooms are carved
           if (dx === 0 && dz === 0) {
             const key = _chunk_key(cx, cz);
@@ -3109,7 +3194,6 @@ function _escape_backrooms_victory(player) {
   for (const tag of ALL_LEVEL_TAGS) {
     player.removeTag(tag);
   }
-  _grassfield_spawn_points.delete(player.id);
 
   const prefix = "\u00A7e[BACKROOMS] \u00A7f";
   const dimension = world.getDimension("overworld");
