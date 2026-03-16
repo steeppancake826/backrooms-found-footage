@@ -1,0 +1,20 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Node (if using regolith or other build tools)
+node_modules/
+package-lock.json
+
+# Build artifacts
+build/
+dist/
+
+# Backups
+*.bak
+*.tmp

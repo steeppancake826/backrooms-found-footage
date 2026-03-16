@@ -1,0 +1,34 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "BACKROOMS: FOUND FOOTAGE",
+    "description": "Descend into the endless halls of the Backrooms. Survive. Escape. Or be forgotten.",
+    "uuid": "a459bb86-3755-48f8-9f54-ebd87cc338ae",
+    "version": [0, 1, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "5bf972a4-675a-43af-b2d8-db9c86bc40f4",
+      "version": [0, 1, 0]
+    },
+    {
+      "type": "script",
+      "uuid": "33c62d0f-a654-484b-b501-585307e16f6e",
+      "version": [0, 1, 0],
+      "language": "javascript",
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "8af2cd1a-fd68-4ad2-b6f0-60a748875887",
+      "version": [0, 1, 0]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.16.0"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "backrooms:fluorescent_light",
+      "menu_category": {
+        "category": "construction",
+        "group": "itemGroup.name.backrooms"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 0.5
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 1.0
+      },
+      "minecraft:light_emission": 15,
+      "minecraft:map_color": "#FFFFCC",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "backrooms_fluorescent_light",
+          "render_method": "opaque"
+        }
+      }
+    }
+  }
+}

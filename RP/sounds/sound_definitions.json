@@ -1,0 +1,27 @@
+{
+  "format_version": "1.14.0",
+  "sound_definitions": {
+    "backrooms.ambient.fluorescent_hum": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/fluorescent_hum",
+          "volume": 0.4,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.ambient.distant_rumble": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/distant_rumble",
+          "volume": 0.3,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    }
+  }
+}
