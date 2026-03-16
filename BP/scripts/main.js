@@ -1,5 +1,7 @@
 import { world, system, EntityDamageCause, BlockPermutation, ItemStack } from "@minecraft/server";
 
+console.warn("[BACKROOMS] Script module loaded successfully");
+
 /**
  * BACKROOMS: FOUND FOOTAGE
  * Main entry point for the behavior pack scripting API.
@@ -2814,37 +2816,41 @@ function _setup_almond_water_listener() {
 
 /** Set up chat command listener. */
 function _setup_chat_commands() {
-  world.beforeEvents.chatSend.subscribe((event) => {
-    const message = event.message.trim();
-    const player = event.sender;
+  try {
+    world.beforeEvents.chatSend.subscribe((event) => {
+      const message = event.message.trim();
+      const player = event.sender;
 
-    if (!message.startsWith("!")) return;
+      if (!message.startsWith("!")) return;
 
-    event.cancel = true;
+      event.cancel = true;
 
-    const parts = message.split(/\s+/);
-    const command = parts[0].toLowerCase();
+      const parts = message.split(/\s+/);
+      const command = parts[0].toLowerCase();
 
-    system.run(() => {
-      try {
-        switch (command) {
-          case "!level":
-            _cmd_level(player, parts[1]);
-            break;
-          case "!gimmemyinventoryback":
-            _cmd_restore_inventory(player);
-            break;
-          case "!backroomsevent":
-            _cmd_scare_event(player);
-            break;
-          default:
-            player.sendMessage("\u00A7cUnknown command. Available: !level, !gimmemyinventoryback, !backroomsevent");
+      system.run(() => {
+        try {
+          switch (command) {
+            case "!level":
+              _cmd_level(player, parts[1]);
+              break;
+            case "!gimmemyinventoryback":
+              _cmd_restore_inventory(player);
+              break;
+            case "!backroomsevent":
+              _cmd_scare_event(player);
+              break;
+            default:
+              player.sendMessage("\u00A7cUnknown command. Available: !level, !gimmemyinventoryback, !backroomsevent");
+          }
+        } catch {
+          player.sendMessage("\u00A7cCommand failed.");
         }
-      } catch {
-        player.sendMessage("\u00A7cCommand failed.");
-      }
+      });
     });
-  });
+  } catch (e) {
+    console.warn("[BACKROOMS] chatSend not available, commands disabled: " + e);
+  }
 }
 
 /**
@@ -3146,18 +3152,18 @@ function _start_grassfield_atmosphere_loop() {
 world.afterEvents.worldInitialize.subscribe(() => {
   world.sendMessage("\u00A7e[BACKROOMS] \u00A7fThe walls are watching...");
 
-  _load_traps();
-  _setup_suffocation_listener();
-  _setup_almond_water_listener();
-  _setup_chat_commands();
-  _start_trap_placement_loop();
-  _start_trap_detection_loop();
-  _start_ambient_loop();
-  _start_boundary_check_loop();
-  _start_chunk_generation_loop();
-  _start_bacteria_loops();
-  _start_exit_detection_loop();
-  _start_grassfield_atmosphere_loop();
-  _start_level_run_mechanics_loop();
-  _start_void_glitch_loop();
+  try { _load_traps(); } catch (e) { console.warn("[BACKROOMS] Failed to load traps: " + e); }
+  try { _setup_suffocation_listener(); } catch (e) { console.warn("[BACKROOMS] Failed to setup suffocation: " + e); }
+  try { _setup_almond_water_listener(); } catch (e) { console.warn("[BACKROOMS] Failed to setup almond water: " + e); }
+  try { _setup_chat_commands(); } catch (e) { console.warn("[BACKROOMS] Failed to setup chat commands: " + e); }
+  try { _start_trap_placement_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start trap loop: " + e); }
+  try { _start_trap_detection_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start trap detection: " + e); }
+  try { _start_ambient_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start ambient: " + e); }
+  try { _start_boundary_check_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start boundary: " + e); }
+  try { _start_chunk_generation_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start chunk gen: " + e); }
+  try { _start_bacteria_loops(); } catch (e) { console.warn("[BACKROOMS] Failed to start bacteria: " + e); }
+  try { _start_exit_detection_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start exit detection: " + e); }
+  try { _start_grassfield_atmosphere_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start grassfield: " + e); }
+  try { _start_level_run_mechanics_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start level run: " + e); }
+  try { _start_void_glitch_loop(); } catch (e) { console.warn("[BACKROOMS] Failed to start void glitch: " + e); }
 });

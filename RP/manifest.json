@@ -4,14 +4,14 @@
     "name": "BACKROOMS: FOUND FOOTAGE Resources",
     "description": "Textures, models, and sounds for BACKROOMS: FOUND FOOTAGE",
     "uuid": "8af2cd1a-fd68-4ad2-b6f0-60a748875887",
-    "version": [0, 1, 0],
-    "min_engine_version": [1, 21, 0]
+    "version": [0, 2, 0],
+    "min_engine_version": [1, 21, 50]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "06ff9439-210e-42a2-9f5f-06e5dc4c283e",
-      "version": [0, 1, 0]
+      "version": [0, 2, 0]
     }
   ]
 }
