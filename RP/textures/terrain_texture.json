@@ -15,6 +15,63 @@
     },
     "backrooms_fluorescent_light": {
       "textures": "textures/blocks/backrooms_fluorescent_light"
+    },
+    "backrooms_concrete_floor": {
+      "textures": "textures/blocks/backrooms_concrete_floor"
+    },
+    "backrooms_industrial_wall": {
+      "textures": "textures/blocks/backrooms_industrial_wall"
+    },
+    "backrooms_pipe_ceiling": {
+      "textures": "textures/blocks/backrooms_pipe_ceiling"
+    },
+    "backrooms_metal_grating": {
+      "textures": "textures/blocks/backrooms_metal_grating"
+    },
+    "backrooms_pipe_wall": {
+      "textures": "textures/blocks/backrooms_pipe_wall"
+    },
+    "backrooms_rusty_ceiling": {
+      "textures": "textures/blocks/backrooms_rusty_ceiling"
+    },
+    "backrooms_pool_tile": {
+      "textures": "textures/blocks/backrooms_pool_tile"
+    },
+    "backrooms_white_tile_wall": {
+      "textures": "textures/blocks/backrooms_white_tile_wall"
+    },
+    "backrooms_pool_light": {
+      "textures": "textures/blocks/backrooms_pool_light"
+    },
+    "backrooms_supply_crate": {
+      "textures": "textures/blocks/backrooms_supply_crate"
+    },
+    "backrooms_dark_ocean_floor": {
+      "textures": "textures/blocks/backrooms_dark_ocean_floor"
+    },
+    "backrooms_coral_wall": {
+      "textures": "textures/blocks/backrooms_coral_wall"
+    },
+    "backrooms_dripping_ceiling": {
+      "textures": "textures/blocks/backrooms_dripping_ceiling"
+    },
+    "backrooms_party_floor": {
+      "textures": "textures/blocks/backrooms_party_floor"
+    },
+    "backrooms_party_wall": {
+      "textures": "textures/blocks/backrooms_party_wall"
+    },
+    "backrooms_party_ceiling": {
+      "textures": "textures/blocks/backrooms_party_ceiling"
+    },
+    "backrooms_void_floor": {
+      "textures": "textures/blocks/backrooms_void_floor"
+    },
+    "backrooms_glitch_wall": {
+      "textures": "textures/blocks/backrooms_glitch_wall"
+    },
+    "backrooms_void_ceiling": {
+      "textures": "textures/blocks/backrooms_void_ceiling"
     }
   }
 }

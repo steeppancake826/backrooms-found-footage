@@ -1,0 +1,20 @@
+{
+  "format_version": "1.21.0",
+  "render_controllers": {
+    "controller.render.skinwalker": {
+      "geometry": "geometry.default",
+      "materials": [
+        {
+          "*": "material.default"
+        }
+      ],
+      "textures": ["texture.default"],
+      "overlay_color": {
+        "r": 0.08,
+        "g": 0.06,
+        "b": 0.06,
+        "a": 1.0
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "backrooms:bacteria",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "backrooms:stage_small": {
+        "minecraft:scale": {
+          "value": 0.4
+        },
+        "minecraft:timer": {
+          "time": [30, 60],
+          "looping": false,
+          "time_down_event": {
+            "event": "backrooms:grow_medium"
+          }
+        }
+      },
+      "backrooms:stage_medium": {
+        "minecraft:scale": {
+          "value": 0.65
+        },
+        "minecraft:timer": {
+          "time": [45, 90],
+          "looping": false,
+          "time_down_event": {
+            "event": "backrooms:grow_large"
+          }
+        }
+      },
+      "backrooms:stage_large": {
+        "minecraft:scale": {
+          "value": 0.9
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": ["bacteria", "backrooms_hostile"]
+      },
+      "minecraft:health": {
+        "value": 20,
+        "max": 20
+      },
+      "minecraft:knockback_resistance": {
+        "value": 1.0
+      },
+      "minecraft:movement": {
+        "value": 0
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:navigation.walk": {
+        "can_walk": false,
+        "avoid_water": true,
+        "avoid_damage_blocks": false
+      },
+      "minecraft:push_through": {
+        "value": 1.0
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 0.4
+      },
+      "minecraft:physics": {
+        "has_gravity": true,
+        "has_collision": false
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": true
+          }
+        ]
+      },
+      "minecraft:despawn": {
+        "despawn_from_distance": {
+          "max_distance": 80,
+          "min_distance": 54
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": ["backrooms:stage_small"]
+        }
+      },
+      "backrooms:grow_medium": {
+        "remove": {
+          "component_groups": ["backrooms:stage_small"]
+        },
+        "add": {
+          "component_groups": ["backrooms:stage_medium"]
+        }
+      },
+      "backrooms:grow_large": {
+        "remove": {
+          "component_groups": ["backrooms:stage_medium"]
+        },
+        "add": {
+          "component_groups": ["backrooms:stage_large"]
+        }
+      }
+    }
+  }
+}

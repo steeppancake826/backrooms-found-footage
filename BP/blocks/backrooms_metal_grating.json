@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "backrooms:metal_grating",
+      "menu_category": {
+        "category": "construction",
+        "group": "itemGroup.name.backrooms"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 2.5
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 6.0
+      },
+      "minecraft:map_color": "#3C3C3C",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "backrooms_metal_grating",
+          "render_method": "opaque"
+        }
+      }
+    }
+  }
+}

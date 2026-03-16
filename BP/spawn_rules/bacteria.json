@@ -1,0 +1,29 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "backrooms:bacteria",
+      "population_control": "monster"
+    },
+    "conditions": [
+      {
+        "minecraft:spawns_on_block_filter": ["backrooms:carpet"],
+        "minecraft:height_filter": {
+          "min": -45,
+          "max": -20
+        },
+        "minecraft:spawns_on_surface": {},
+        "minecraft:weight": {
+          "default": 15
+        },
+        "minecraft:herd": {
+          "min_size": 1,
+          "max_size": 2
+        },
+        "minecraft:density_limit": {
+          "surface": 4
+        }
+      }
+    ]
+  }
+}

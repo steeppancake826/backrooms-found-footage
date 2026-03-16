@@ -1,0 +1,24 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "backrooms:bacteria",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/slime/slime"
+      },
+      "geometry": {
+        "default": "geometry.slime"
+      },
+      "render_controllers": [
+        "controller.render.bacteria"
+      ],
+      "spawn_egg": {
+        "base_color": "#1a0a0a",
+        "overlay_color": "#3d0f0f"
+      }
+    }
+  }
+}

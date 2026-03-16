@@ -2,3 +2,44 @@
 
 pack.name=BACKROOMS: FOUND FOOTAGE
 pack.description=Descend into the endless halls of the Backrooms.
+
+entity.backrooms:bacteria.name=Bacteria
+item.spawn_egg.entity.backrooms:bacteria.name=Spawn Bacteria
+
+entity.backrooms:skinwalker.name=Skinwalker
+item.spawn_egg.entity.backrooms:skinwalker.name=Spawn Skinwalker
+
+tile.backrooms:wallpaper.name=Backrooms Wallpaper
+tile.backrooms:carpet.name=Backrooms Carpet
+tile.backrooms:ceiling_tile.name=Ceiling Tile
+tile.backrooms:fluorescent_light.name=Fluorescent Light
+
+tile.backrooms:concrete_floor.name=Concrete Floor
+tile.backrooms:industrial_wall.name=Industrial Wall
+tile.backrooms:pipe_ceiling.name=Pipe Ceiling
+
+tile.backrooms:metal_grating.name=Metal Grating
+tile.backrooms:pipe_wall.name=Pipe Wall
+tile.backrooms:rusty_ceiling.name=Rusty Ceiling
+
+tile.backrooms:pool_tile.name=Pool Tile
+tile.backrooms:white_tile_wall.name=White Tile Wall
+tile.backrooms:pool_light.name=Pool Light
+
+tile.backrooms:supply_crate.name=Supply Crate
+
+item.backrooms:almond_water.name=Almond Water
+
+tile.backrooms:dark_ocean_floor.name=Dark Ocean Floor
+tile.backrooms:coral_wall.name=Coral Wall
+tile.backrooms:dripping_ceiling.name=Dripping Ceiling
+
+tile.backrooms:party_floor.name=Party Floor
+tile.backrooms:party_wall.name=Party Wall
+tile.backrooms:party_ceiling.name=Party Ceiling
+
+tile.backrooms:void_floor.name=Void Floor
+tile.backrooms:glitch_wall.name=Glitch Wall
+tile.backrooms:void_ceiling.name=Void Ceiling
+
+itemGroup.name.backrooms=Backrooms

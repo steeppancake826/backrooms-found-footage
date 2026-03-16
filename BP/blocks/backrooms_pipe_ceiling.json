@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "backrooms:pipe_ceiling",
+      "menu_category": {
+        "category": "construction",
+        "group": "itemGroup.name.backrooms"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.5
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 4.0
+      },
+      "minecraft:map_color": "#4A4A4A",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "backrooms_pipe_ceiling",
+          "render_method": "opaque"
+        }
+      }
+    }
+  }
+}

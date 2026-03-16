@@ -1,0 +1,6 @@
+{
+  "ui_defs": [
+    "ui/backrooms_vhs_overlay.json",
+    "ui/hud_screen.json"
+  ]
+}

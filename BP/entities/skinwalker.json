@@ -1,0 +1,182 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "backrooms:skinwalker",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "backrooms:stalking": {
+        "minecraft:movement": {
+          "value": 0.18
+        },
+        "minecraft:behavior.stalk_and_pounce_on_target": {
+          "priority": 2,
+          "stalk_speed": 0.18,
+          "max_stalk_dist": 25,
+          "leap_height": 0.0,
+          "leap_dist": 0.0,
+          "pounce_max_dist": 0.0,
+          "interest_time": 10.0,
+          "stuck_time": 5.0,
+          "strike_dist": 10.0
+        },
+        "minecraft:timer": {
+          "time": [20, 40],
+          "looping": true,
+          "time_down_event": {
+            "event": "backrooms:check_proximity"
+          }
+        }
+      },
+      "backrooms:chasing": {
+        "minecraft:movement": {
+          "value": 0.35
+        },
+        "minecraft:behavior.melee_attack": {
+          "priority": 2,
+          "speed_multiplier": 1.2,
+          "track_target": true,
+          "reach_multiplier": 1.5
+        },
+        "minecraft:timer": {
+          "time": [30, 45],
+          "looping": false,
+          "time_down_event": {
+            "event": "backrooms:return_to_stalking"
+          }
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": ["skinwalker", "backrooms_hostile", "monster"]
+      },
+      "minecraft:health": {
+        "value": 50,
+        "max": 50
+      },
+      "minecraft:attack": {
+        "damage": 6
+      },
+      "minecraft:knockback_resistance": {
+        "value": 0.8
+      },
+      "minecraft:fire_immune": true,
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:navigation.walk": {
+        "can_walk": true,
+        "can_open_doors": true,
+        "avoid_water": false,
+        "avoid_damage_blocks": false
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.8
+      },
+      "minecraft:physics": {
+        "has_gravity": true,
+        "has_collision": true
+      },
+      "minecraft:can_climb": {},
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1,
+        "alert_same_type": false
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 3,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "player"
+            },
+            "max_dist": 40
+          }
+        ],
+        "must_see": false,
+        "must_reach": false,
+        "reselect_targets": true,
+        "within_radius": 40.0
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 6,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 7,
+        "look_distance": 24.0,
+        "probability": 0.1
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 8
+      },
+      "minecraft:follow_range": {
+        "value": 48,
+        "max": 48
+      },
+      "minecraft:despawn": {
+        "despawn_from_distance": {
+          "max_distance": 128,
+          "min_distance": 80
+        }
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "deals_damage": true
+          }
+        ]
+      },
+      "minecraft:target_nearby_sensor": {
+        "inside_range": 10.0,
+        "outside_range": 25.0,
+        "on_inside_range": {
+          "event": "backrooms:begin_chase",
+          "target": "self"
+        },
+        "on_outside_range": {
+          "event": "backrooms:return_to_stalking",
+          "target": "self"
+        }
+      },
+      "minecraft:ambient_sound_interval": {
+        "value": 8.0,
+        "range": 4.0,
+        "event_name": "ambient"
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": ["backrooms:stalking"]
+        }
+      },
+      "backrooms:begin_chase": {
+        "remove": {
+          "component_groups": ["backrooms:stalking"]
+        },
+        "add": {
+          "component_groups": ["backrooms:chasing"]
+        }
+      },
+      "backrooms:return_to_stalking": {
+        "remove": {
+          "component_groups": ["backrooms:chasing"]
+        },
+        "add": {
+          "component_groups": ["backrooms:stalking"]
+        }
+      },
+      "backrooms:check_proximity": {}
+    }
+  }
+}

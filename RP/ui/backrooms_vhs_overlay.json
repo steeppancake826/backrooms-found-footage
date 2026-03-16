@@ -1,0 +1,316 @@
+{
+  "namespace": "backrooms_vhs",
+
+  "vhs_root_panel": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [
+      { "vignette@backrooms_vhs.vignette_panel": {} },
+      { "scanlines@backrooms_vhs.scanlines_panel": {} },
+      { "rec_indicator@backrooms_vhs.rec_indicator_panel": {} },
+      { "timestamp@backrooms_vhs.timestamp_panel": {} },
+      { "battery@backrooms_vhs.battery_panel": {} }
+    ]
+  },
+
+  "vignette_panel": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [
+      {
+        "top_gradient": {
+          "type": "image",
+          "size": ["100%", "15%"],
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "texture": "textures/ui/White",
+          "color": [0.0, 0.0, 0.0],
+          "alpha": 0.5
+        }
+      },
+      {
+        "bottom_gradient": {
+          "type": "image",
+          "size": ["100%", "15%"],
+          "anchor_from": "bottom_left",
+          "anchor_to": "bottom_left",
+          "texture": "textures/ui/White",
+          "color": [0.0, 0.0, 0.0],
+          "alpha": 0.5
+        }
+      },
+      {
+        "left_gradient": {
+          "type": "image",
+          "size": ["10%", "100%"],
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "texture": "textures/ui/White",
+          "color": [0.0, 0.0, 0.0],
+          "alpha": 0.35
+        }
+      },
+      {
+        "right_gradient": {
+          "type": "image",
+          "size": ["10%", "100%"],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [0.0, 0.0, 0.0],
+          "alpha": 0.35
+        }
+      }
+    ]
+  },
+
+  "scanline_bar": {
+    "type": "image",
+    "size": ["100%", "1px"],
+    "texture": "textures/ui/White",
+    "color": [0.0, 0.0, 0.0],
+    "alpha": 0.12
+  },
+
+  "scanline_spacer": {
+    "type": "panel",
+    "size": ["100%", "2px"]
+  },
+
+  "scanlines_panel": {
+    "type": "stack_panel",
+    "orientation": "vertical",
+    "size": ["100%", "100%"],
+    "controls": [
+      { "s01@backrooms_vhs.scanline_bar": {} },
+      { "g01@backrooms_vhs.scanline_spacer": {} },
+      { "s02@backrooms_vhs.scanline_bar": {} },
+      { "g02@backrooms_vhs.scanline_spacer": {} },
+      { "s03@backrooms_vhs.scanline_bar": {} },
+      { "g03@backrooms_vhs.scanline_spacer": {} },
+      { "s04@backrooms_vhs.scanline_bar": {} },
+      { "g04@backrooms_vhs.scanline_spacer": {} },
+      { "s05@backrooms_vhs.scanline_bar": {} },
+      { "g05@backrooms_vhs.scanline_spacer": {} },
+      { "s06@backrooms_vhs.scanline_bar": {} },
+      { "g06@backrooms_vhs.scanline_spacer": {} },
+      { "s07@backrooms_vhs.scanline_bar": {} },
+      { "g07@backrooms_vhs.scanline_spacer": {} },
+      { "s08@backrooms_vhs.scanline_bar": {} },
+      { "g08@backrooms_vhs.scanline_spacer": {} },
+      { "s09@backrooms_vhs.scanline_bar": {} },
+      { "g09@backrooms_vhs.scanline_spacer": {} },
+      { "s10@backrooms_vhs.scanline_bar": {} },
+      { "g10@backrooms_vhs.scanline_spacer": {} },
+      { "s11@backrooms_vhs.scanline_bar": {} },
+      { "g11@backrooms_vhs.scanline_spacer": {} },
+      { "s12@backrooms_vhs.scanline_bar": {} },
+      { "g12@backrooms_vhs.scanline_spacer": {} },
+      { "s13@backrooms_vhs.scanline_bar": {} },
+      { "g13@backrooms_vhs.scanline_spacer": {} },
+      { "s14@backrooms_vhs.scanline_bar": {} },
+      { "g14@backrooms_vhs.scanline_spacer": {} },
+      { "s15@backrooms_vhs.scanline_bar": {} },
+      { "g15@backrooms_vhs.scanline_spacer": {} },
+      { "s16@backrooms_vhs.scanline_bar": {} },
+      { "g16@backrooms_vhs.scanline_spacer": {} },
+      { "s17@backrooms_vhs.scanline_bar": {} },
+      { "g17@backrooms_vhs.scanline_spacer": {} },
+      { "s18@backrooms_vhs.scanline_bar": {} },
+      { "g18@backrooms_vhs.scanline_spacer": {} },
+      { "s19@backrooms_vhs.scanline_bar": {} },
+      { "g19@backrooms_vhs.scanline_spacer": {} },
+      { "s20@backrooms_vhs.scanline_bar": {} },
+      { "g20@backrooms_vhs.scanline_spacer": {} },
+      { "s21@backrooms_vhs.scanline_bar": {} },
+      { "g21@backrooms_vhs.scanline_spacer": {} },
+      { "s22@backrooms_vhs.scanline_bar": {} },
+      { "g22@backrooms_vhs.scanline_spacer": {} },
+      { "s23@backrooms_vhs.scanline_bar": {} },
+      { "g23@backrooms_vhs.scanline_spacer": {} },
+      { "s24@backrooms_vhs.scanline_bar": {} },
+      { "g24@backrooms_vhs.scanline_spacer": {} },
+      { "s25@backrooms_vhs.scanline_bar": {} },
+      { "g25@backrooms_vhs.scanline_spacer": {} },
+      { "s26@backrooms_vhs.scanline_bar": {} },
+      { "g26@backrooms_vhs.scanline_spacer": {} },
+      { "s27@backrooms_vhs.scanline_bar": {} },
+      { "g27@backrooms_vhs.scanline_spacer": {} },
+      { "s28@backrooms_vhs.scanline_bar": {} },
+      { "g28@backrooms_vhs.scanline_spacer": {} },
+      { "s29@backrooms_vhs.scanline_bar": {} },
+      { "g29@backrooms_vhs.scanline_spacer": {} },
+      { "s30@backrooms_vhs.scanline_bar": {} },
+      { "g30@backrooms_vhs.scanline_spacer": {} },
+      { "s31@backrooms_vhs.scanline_bar": {} },
+      { "g31@backrooms_vhs.scanline_spacer": {} },
+      { "s32@backrooms_vhs.scanline_bar": {} },
+      { "g32@backrooms_vhs.scanline_spacer": {} },
+      { "s33@backrooms_vhs.scanline_bar": {} },
+      { "g33@backrooms_vhs.scanline_spacer": {} },
+      { "s34@backrooms_vhs.scanline_bar": {} },
+      { "g34@backrooms_vhs.scanline_spacer": {} },
+      { "s35@backrooms_vhs.scanline_bar": {} },
+      { "g35@backrooms_vhs.scanline_spacer": {} },
+      { "s36@backrooms_vhs.scanline_bar": {} },
+      { "g36@backrooms_vhs.scanline_spacer": {} },
+      { "s37@backrooms_vhs.scanline_bar": {} },
+      { "g37@backrooms_vhs.scanline_spacer": {} },
+      { "s38@backrooms_vhs.scanline_bar": {} },
+      { "g38@backrooms_vhs.scanline_spacer": {} },
+      { "s39@backrooms_vhs.scanline_bar": {} },
+      { "g39@backrooms_vhs.scanline_spacer": {} },
+      { "s40@backrooms_vhs.scanline_bar": {} },
+      { "g40@backrooms_vhs.scanline_spacer": {} },
+      { "s41@backrooms_vhs.scanline_bar": {} },
+      { "g41@backrooms_vhs.scanline_spacer": {} },
+      { "s42@backrooms_vhs.scanline_bar": {} },
+      { "g42@backrooms_vhs.scanline_spacer": {} },
+      { "s43@backrooms_vhs.scanline_bar": {} },
+      { "g43@backrooms_vhs.scanline_spacer": {} },
+      { "s44@backrooms_vhs.scanline_bar": {} },
+      { "g44@backrooms_vhs.scanline_spacer": {} },
+      { "s45@backrooms_vhs.scanline_bar": {} },
+      { "g45@backrooms_vhs.scanline_spacer": {} },
+      { "s46@backrooms_vhs.scanline_bar": {} },
+      { "g46@backrooms_vhs.scanline_spacer": {} },
+      { "s47@backrooms_vhs.scanline_bar": {} },
+      { "g47@backrooms_vhs.scanline_spacer": {} },
+      { "s48@backrooms_vhs.scanline_bar": {} },
+      { "g48@backrooms_vhs.scanline_spacer": {} },
+      { "s49@backrooms_vhs.scanline_bar": {} },
+      { "g49@backrooms_vhs.scanline_spacer": {} },
+      { "s50@backrooms_vhs.scanline_bar": {} },
+      { "g50@backrooms_vhs.scanline_spacer": {} },
+      { "s51@backrooms_vhs.scanline_bar": {} },
+      { "g51@backrooms_vhs.scanline_spacer": {} },
+      { "s52@backrooms_vhs.scanline_bar": {} },
+      { "g52@backrooms_vhs.scanline_spacer": {} },
+      { "s53@backrooms_vhs.scanline_bar": {} },
+      { "g53@backrooms_vhs.scanline_spacer": {} },
+      { "s54@backrooms_vhs.scanline_bar": {} },
+      { "g54@backrooms_vhs.scanline_spacer": {} },
+      { "s55@backrooms_vhs.scanline_bar": {} },
+      { "g55@backrooms_vhs.scanline_spacer": {} },
+      { "s56@backrooms_vhs.scanline_bar": {} },
+      { "g56@backrooms_vhs.scanline_spacer": {} },
+      { "s57@backrooms_vhs.scanline_bar": {} },
+      { "g57@backrooms_vhs.scanline_spacer": {} },
+      { "s58@backrooms_vhs.scanline_bar": {} },
+      { "g58@backrooms_vhs.scanline_spacer": {} },
+      { "s59@backrooms_vhs.scanline_bar": {} },
+      { "g59@backrooms_vhs.scanline_spacer": {} },
+      { "s60@backrooms_vhs.scanline_bar": {} }
+    ]
+  },
+
+  "rec_indicator_panel": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [
+      {
+        "rec_dot": {
+          "type": "image",
+          "size": [6, 6],
+          "offset": [-12, 8],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [1.0, 0.1, 0.1],
+          "alpha": 0.95
+        }
+      },
+      {
+        "rec_text": {
+          "type": "label",
+          "size": ["default", "default"],
+          "offset": [-22, 7],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "text": "REC",
+          "color": [1.0, 0.15, 0.15],
+          "shadow": false,
+          "font_type": "smooth",
+          "font_size": "small"
+        }
+      }
+    ]
+  },
+
+  "timestamp_panel": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [
+      {
+        "date_label": {
+          "type": "label",
+          "size": ["default", "default"],
+          "offset": [10, -20],
+          "anchor_from": "bottom_left",
+          "anchor_to": "bottom_left",
+          "text": "JAN 15 1991  03:27 AM",
+          "color": [0.9, 0.9, 0.9],
+          "shadow": false,
+          "font_type": "smooth",
+          "font_size": "small",
+          "alpha": 0.8
+        }
+      }
+    ]
+  },
+
+  "battery_panel": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [
+      {
+        "battery_icon_outline": {
+          "type": "image",
+          "size": [18, 10],
+          "offset": [-12, 22],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [0.9, 0.9, 0.9],
+          "alpha": 0.7
+        }
+      },
+      {
+        "battery_icon_inner": {
+          "type": "image",
+          "size": [14, 6],
+          "offset": [-14, 24],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [0.0, 0.0, 0.0],
+          "alpha": 0.9
+        }
+      },
+      {
+        "battery_fill": {
+          "type": "image",
+          "size": [10, 4],
+          "offset": [-16, 25],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [0.3, 0.9, 0.3],
+          "alpha": 0.8
+        }
+      },
+      {
+        "battery_tip": {
+          "type": "image",
+          "size": [2, 4],
+          "offset": [-10, 25],
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "texture": "textures/ui/White",
+          "color": [0.9, 0.9, 0.9],
+          "alpha": 0.7
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "backrooms:skinwalker",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/steve"
+      },
+      "geometry": {
+        "default": "geometry.humanoid"
+      },
+      "animations": {
+        "walk": "animation.humanoid.move",
+        "attack": "animation.humanoid.attack.rotations",
+        "look_at_target": "animation.humanoid.look_at_target.default"
+      },
+      "animation_controllers": [],
+      "render_controllers": ["controller.render.skinwalker"],
+      "spawn_egg": {
+        "base_color": "#1a1a1a",
+        "overlay_color": "#4a0000"
+      }
+    }
+  }
+}

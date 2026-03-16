@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "backrooms:supply_crate",
+      "menu_category": {
+        "category": "items",
+        "group": "itemGroup.name.backrooms"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 2.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 3.0
+      },
+      "minecraft:map_color": "#8B6914",
+      "minecraft:loot": "loot_tables/supply_crate.json",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "backrooms_supply_crate",
+          "render_method": "opaque"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "backrooms:dripping_ceiling",
+      "menu_category": {
+        "category": "construction",
+        "group": "itemGroup.name.backrooms"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 2.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 5.0
+      },
+      "minecraft:map_color": "#2a2a3a",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "backrooms_dripping_ceiling",
+          "render_method": "opaque"
+        }
+      }
+    }
+  }
+}

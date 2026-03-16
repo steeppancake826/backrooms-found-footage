@@ -1,0 +1,18 @@
+{
+  "namespace": "hud",
+
+  "modifications": [
+    {
+      "array_name": "controls",
+      "operation": "insert_front",
+      "control_name": "backrooms_vhs_overlay",
+      "value": [
+        {
+          "backrooms_vhs_overlay@backrooms_vhs.vhs_root_panel": {
+            "ignored": false
+          }
+        }
+      ]
+    }
+  ]
+}

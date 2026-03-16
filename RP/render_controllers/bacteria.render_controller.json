@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.0",
+  "render_controllers": {
+    "controller.render.bacteria": {
+      "geometry": "geometry.default",
+      "materials": [
+        {
+          "*": "material.default"
+        }
+      ],
+      "textures": [
+        "texture.default"
+      ],
+      "overlay_color": {
+        "r": 0.1,
+        "g": 0.02,
+        "b": 0.02,
+        "a": 1.0
+      },
+      "is_hurt_color": {
+        "r": 0.5,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.5
+      }
+    }
+  }
+}

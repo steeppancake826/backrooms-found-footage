@@ -1,6 +1,7 @@
 {
   "format_version": "1.14.0",
   "sound_definitions": {
+
     "backrooms.ambient.fluorescent_hum": {
       "category": "ambient",
       "sounds": [
@@ -20,6 +21,388 @@
           "volume": 0.3,
           "is3D": false,
           "stream": true
+        }
+      ]
+    },
+    "backrooms.ambient.carpet_squelch": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/carpet_squelch",
+          "volume": 0.35,
+          "is3D": false,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.ambient.light_flicker": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/light_flicker",
+          "volume": 0.3,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.ambient.door_slam": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/door_slam",
+          "volume": 0.7,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.level1.dripping": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level1/dripping",
+          "volume": 0.3,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level1.machine_hum": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level1/machine_hum",
+          "volume": 0.35,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.level1.metal_clank": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level1/metal_clank",
+          "volume": 0.6,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level1.pipe_groan": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level1/pipe_groan",
+          "volume": 0.4,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.level2.steam_hiss": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level2/steam_hiss",
+          "volume": 0.5,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level2.metal_grating": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level2/metal_grating",
+          "volume": 0.35,
+          "is3D": false,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level2.pump_rhythm": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level2/pump_rhythm",
+          "volume": 0.3,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.level2.warning_alarm": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level2/warning_alarm",
+          "volume": 0.7,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.poolrooms.water_lap": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/poolrooms/water_lap",
+          "volume": 0.25,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.poolrooms.echo_drip": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/poolrooms/echo_drip",
+          "volume": 0.3,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.poolrooms.underwater_rumble": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/poolrooms/underwater_rumble",
+          "volume": 0.2,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.poolrooms.splash": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/poolrooms/splash",
+          "volume": 0.6,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.grassfield.wind": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/grassfield/wind",
+          "volume": 0.3,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.grassfield.crickets": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/grassfield/crickets",
+          "volume": 0.25,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.grassfield.distant_thunder": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/grassfield/distant_thunder",
+          "volume": 0.6,
+          "is3D": false,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.skinwalker.ambient": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/entity/skinwalker_ambient",
+          "volume": 0.5,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.skinwalker.chase": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/entity/skinwalker_chase",
+          "volume": 0.7,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.skinwalker.spotted": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/entity/skinwalker_spotted",
+          "volume": 0.8,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.bacteria.ambient": {
+      "category": "hostile",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/entity/bacteria_ambient",
+          "volume": 0.5,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+
+    "backrooms.thalassophobia.deep_current": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/thalassophobia/deep_current",
+          "volume": 0.3,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.thalassophobia.bubble_rise": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/thalassophobia/bubble_rise",
+          "volume": 0.25,
+          "is3D": false,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.thalassophobia.whale_call": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/thalassophobia/whale_call",
+          "volume": 0.4,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.thalassophobia.water_pressure": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/thalassophobia/water_pressure",
+          "volume": 0.35,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+
+    "backrooms.level_run.party_music": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level_run/party_music",
+          "volume": 0.3,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.level_run.balloon_pop": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level_run/balloon_pop",
+          "volume": 0.6,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level_run.child_laugh": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level_run/child_laugh",
+          "volume": 0.5,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.level_run.chase_music": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/level_run/chase_music",
+          "volume": 0.8,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+
+    "backrooms.void.reality_tear": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/void/reality_tear",
+          "volume": 0.7,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.void.static_burst": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/void/static_burst",
+          "volume": 0.8,
+          "is3D": true,
+          "stream": false
+        }
+      ]
+    },
+    "backrooms.void.void_hum": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/void/void_hum",
+          "volume": 0.2,
+          "is3D": false,
+          "stream": true
+        }
+      ]
+    },
+    "backrooms.void.glitch_stutter": {
+      "category": "ambient",
+      "sounds": [
+        {
+          "name": "sounds/backrooms/void/glitch_stutter",
+          "volume": 0.6,
+          "is3D": true,
+          "stream": false
         }
       ]
     }
